@@ -49,7 +49,7 @@ use crate::{
     vt::Cell,
 };
 
-const NAMESPACE: &str = "org.omarchy.screensaver";
+const NAMESPACE: &str = "org.aliasos.screensaver";
 
 #[derive(Clone, Copy)]
 enum KeyboardTransition {

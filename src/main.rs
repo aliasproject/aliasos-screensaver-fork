@@ -1,13 +1,13 @@
 use std::{env, process::ExitCode};
 
 use anyhow::{Context, Result};
-use omarchy_launch_screensaver::{engine::Animation, launch, options, options::Options, wayland};
+use aliasos_screensaver::{engine::Animation, launch, options, options::Options, wayland};
 
 fn main() -> ExitCode {
     let parsed = match options::parse() {
         Ok(parsed) => parsed,
         Err(error) => {
-            eprintln!("omarchy-launch-screensaver: {error}");
+            eprintln!("aliasos-screensaver: {error}");
             return ExitCode::from(2);
         }
     };
@@ -18,7 +18,7 @@ fn main() -> ExitCode {
     let input = match options::load_input(&options) {
         Ok(input) => input,
         Err(error) => {
-            eprintln!("omarchy-launch-screensaver: {error:#}");
+            eprintln!("aliasos-screensaver: {error:#}");
             return ExitCode::FAILURE;
         }
     };
@@ -32,7 +32,7 @@ fn report(result: Result<i32>) -> ExitCode {
     match result {
         Ok(code) => ExitCode::from(code.clamp(0, 255) as u8),
         Err(error) => {
-            eprintln!("omarchy-launch-screensaver: {error:#}");
+            eprintln!("aliasos-screensaver: {error:#}");
             ExitCode::FAILURE
         }
     }
@@ -54,7 +54,6 @@ fn run_overlay(options: Options, input: String) -> Result<i32> {
     if env::var_os("WAYLAND_DISPLAY").is_none() && env::var_os("WAYLAND_SOCKET").is_none() {
         anyhow::bail!("no WAYLAND_DISPLAY (use --headless on this box)");
     }
-    launch::quiet_walker();
     let terminated = wayland::termination_flag()?;
     let _cursor = launch::CursorGuard::hide();
     wayland::run(input, options, terminated).context("screensaver failed")?;
